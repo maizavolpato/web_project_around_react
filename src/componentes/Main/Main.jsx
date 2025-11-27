@@ -87,7 +87,7 @@ export default function Main() {
         </div>
         <div className="profile__info">
           <div className="profile__name-button">
-            <h2 className="profile__name"></h2>
+            <h2 className="profile__name">Jacques Cousteau</h2>
             <button
               aria-label="Edit profile"
               className="profile__edit-button"
@@ -97,7 +97,7 @@ export default function Main() {
               }}
             ></button>
           </div>
-          <h1 className="profile__job"></h1>
+          <h1 className="profile__job">Explorador</h1>
         </div>
         <button
           aria-label="Add card"

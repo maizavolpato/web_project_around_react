@@ -23,8 +23,8 @@ ul {
 }
 
 .cards__list {
-  width: 246px;
   display: flex;
+  justify-content: center;
   gap: 20px;
   margin: 25px 15px 31px 21px;
 }
@@ -87,9 +87,9 @@ ul {
 }
 
 @media screen and (max-width: 544px) {
-  .card {
+  .cards__list {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
   }
 }
