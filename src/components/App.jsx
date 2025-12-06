@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 import Header from "./Header/Header";
-import Main from "./Main/Main";
-import Footer from "./Footer/Footer";
-import ImagePopup from "./Main/components/ImagePopup/ImagePopup";
+import Main from "./main/Main";
+import Footer from "./footer/Footer";
+import ImagePopup from "./Main/components/imagePopup/ImagePopup";
 import { api } from "../utils/api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 

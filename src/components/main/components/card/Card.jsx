@@ -1,4 +1,4 @@
-import ImagePopup from "../ImagePopup/ImagePopup.jsx";
+import ImagePopup from "../imagePopup/ImagePopup.jsx";
 
 export default function Card(props) {
   const { name, link, isLiked, _id } = props.card;

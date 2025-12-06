@@ -1,13 +1,10 @@
-import { useState, useEffect, useContext } from "react";
-import avatar from "../../images/avatar.png";
-import Popup from "./components/Popup/Popup.jsx";
-import EditProfile from "./components/EditProfile/EditProfile.jsx";
-import NewCard from "./components/NewCard/NewCard.jsx";
-import Card from "./components/Card/Card.jsx";
-import ImagePopup from "./components/ImagePopup/ImagePopup.jsx";
-import { api } from "../../utils/api";
+import { useEffect, useContext } from "react";
+import Popup from "./components/Popup.jsx";
+import EditProfile from "./components/editProfile/EditProfile.jsx";
+import NewCard from "./components/newCard/NewCard.jsx";
+import Card from "./components/card/Card.jsx";
 import CurrentUserContext from "../../contexts/CurrentUserContext.jsx";
-import EditAvatar from "./components/EditAvatar/EditAvatar.jsx";
+import EditAvatar from "./components/editAvatar/EditAvatar.jsx";
 
 export default function Main({
   onOpenPopup,
@@ -20,11 +17,7 @@ export default function Main({
 }) {
   const { currentUser } = useContext(CurrentUserContext);
 
-  // const [popup, setPopup] = useState(null);
-
   const newCardPopup = { title: "New card", children: <NewCard /> };
-
-  // const [cards, setCards] = useState([]);
 
   const editProfilePopup = {
     title: "Editar Perfil",
@@ -35,39 +28,6 @@ export default function Main({
     title: "Alterar Avatar",
     children: <EditAvatar />,
   };
-
-  // useEffect(() => {
-  //   api
-  //     .getInitialCards()
-  //     .then((cardData) => {
-  //       setCards(cardData);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
-  // async function handleCardLike(card) {
-  //   const isLiked = card.isLiked;
-
-  //   try {
-  //     let newCard;
-  //     if (isLiked) {
-  //       console.log(card);
-  //       newCard = await api.likeCardOff(card._id);
-  //     } else {
-  //       newCard = await api.likeCardOn(card._id);
-  //     }
-
-  //     setCards((state) =>
-  //       state.map((currentCard) =>
-  //         currentCard._id === card._id ? newCard : currentCard
-  //       )
-  //     );
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
 
   useEffect(() => {
     function handleEscClose(event) {
@@ -85,26 +45,6 @@ export default function Main({
       document.removeEventListener("keydown", handleEscClose);
     };
   }, [popup]);
-
-  // function handleImageClick(card) {
-  //   const imagePopup = {
-  //     title: null, // ImagePopup não tem título
-  //     children: <ImagePopup card={card} onClose={onClosePopup} />,
-  //   };
-  //   onOpenPopup(imagePopup);
-  // }
-
-  // async function handleDeleteClick(cardId) {
-  //   try {
-  //     await api.deleteCard(cardId);
-
-  //     setCards((currentCards) =>
-  //       currentCards.filter((currentCard) => cardId !== cardId)
-  //     );
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
 
   return (
     <>
