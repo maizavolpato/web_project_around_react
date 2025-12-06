@@ -1,6 +1,35 @@
+import { useState, useContext } from "react";
+import CurrentUserContext from "../../../../contexts/CurrentUserContext";
+
 export default function NewCard() {
+  const { handleAddPlaceSubmit } = useContext(CurrentUserContext);
+
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState("");
+
+  const handleTitleChange = (evt) => {
+    setTitle(evt.target.value);
+  };
+
+  const handleImageChange = (evt) => {
+    setImage(evt.target.value);
+  };
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+
+    handleAddPlaceSubmit({
+      name: title,
+      link: image,
+    });
+  };
   return (
-    <form id="form" className="popup__elements-edit" noValidate>
+    <form
+      id="form"
+      className="popup__elements-edit"
+      noValidate
+      onSubmit={handleSubmit}
+    >
       <fieldset className="popup__fieldset">
         <input
           type="text"
@@ -11,6 +40,8 @@ export default function NewCard() {
           minLength="2"
           maxLength="30"
           required
+          value={title}
+          onChange={handleTitleChange}
         />
         <span id="title-error" className="popup__input-error-message">
           Error
@@ -22,6 +53,8 @@ export default function NewCard() {
           name="image"
           placeholder="Link de Imagem"
           required
+          value={image}
+          onChange={handleImageChange}
         />
         <span id="image-error" className="popup__input-error-message">
           Error

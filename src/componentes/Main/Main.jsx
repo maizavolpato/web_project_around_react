@@ -1,44 +1,78 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import avatar from "../../images/avatar.png";
 import Popup from "./components/Popup/Popup.jsx";
 import EditProfile from "./components/EditProfile/EditProfile.jsx";
 import NewCard from "./components/NewCard/NewCard.jsx";
 import Card from "./components/Card/Card.jsx";
 import ImagePopup from "./components/ImagePopup/ImagePopup.jsx";
+import { api } from "../../utils/api";
+import CurrentUserContext from "../../contexts/CurrentUserContext.jsx";
+import EditAvatar from "./components/EditAvatar/EditAvatar.jsx";
 
-export default function Main() {
-  const [popup, setPopup] = useState(null);
+export default function Main({
+  onOpenPopup,
+  onClosePopup,
+  popup,
+  onCardLike,
+  onDeleteCard,
+  onImageClick,
+  cards,
+}) {
+  const { currentUser } = useContext(CurrentUserContext);
+
+  // const [popup, setPopup] = useState(null);
 
   const newCardPopup = { title: "New card", children: <NewCard /> };
 
-  const [cards, setCards] = useState([
-    {
-      isLiked: false,
-      _id: "5d1f0611d321eb4bdcd707dd",
-      name: "Yosemite Valley",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-      owner: "5d1f0611d321eb4bdcd707dd",
-      createdAt: "2019-07-05T08:10:57.741Z",
-    },
-    {
-      isLiked: false,
-      _id: "5d1f064ed321eb4bdcd707de",
-      name: "Lake Louise",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-      owner: "5d1f0611d321eb4bdcd707dd",
-      createdAt: "2019-07-05T08:11:58.324Z",
-    },
-  ]);
+  // const [cards, setCards] = useState([]);
 
   const editProfilePopup = {
     title: "Editar Perfil",
     children: <EditProfile />,
   };
 
+  const editAvatarPopup = {
+    title: "Alterar Avatar",
+    children: <EditAvatar />,
+  };
+
+  // useEffect(() => {
+  //   api
+  //     .getInitialCards()
+  //     .then((cardData) => {
+  //       setCards(cardData);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+
+  // async function handleCardLike(card) {
+  //   const isLiked = card.isLiked;
+
+  //   try {
+  //     let newCard;
+  //     if (isLiked) {
+  //       console.log(card);
+  //       newCard = await api.likeCardOff(card._id);
+  //     } else {
+  //       newCard = await api.likeCardOn(card._id);
+  //     }
+
+  //     setCards((state) =>
+  //       state.map((currentCard) =>
+  //         currentCard._id === card._id ? newCard : currentCard
+  //       )
+  //     );
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
+
   useEffect(() => {
     function handleEscClose(event) {
       if (event.key === "Escape") {
-        handleClosePopup();
+        onClosePopup();
       }
     }
     // Adiciona o event listener apenas se há um popup aberto
@@ -52,58 +86,61 @@ export default function Main() {
     };
   }, [popup]);
 
-  function handleOpenPopup(popup) {
-    setPopup(popup);
-  }
+  // function handleImageClick(card) {
+  //   const imagePopup = {
+  //     title: null, // ImagePopup não tem título
+  //     children: <ImagePopup card={card} onClose={onClosePopup} />,
+  //   };
+  //   onOpenPopup(imagePopup);
+  // }
 
-  function handleClosePopup() {
-    setPopup(null);
-  }
+  // async function handleDeleteClick(cardId) {
+  //   try {
+  //     await api.deleteCard(cardId);
 
-  function handleImageClick(card) {
-    const imagePopup = {
-      title: null, // ImagePopup não tem título
-      children: <ImagePopup card={card} onClose={handleClosePopup} />,
-    };
-    setPopup(imagePopup);
-  }
-
-  function handleDeleteCard(cardId) {
-    setCards((currentCards) =>
-      currentCards.filter((card) => card._id !== cardId)
-    );
-  }
+  //     setCards((currentCards) =>
+  //       currentCards.filter((currentCard) => cardId !== cardId)
+  //     );
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
 
   return (
     <>
       <section className="profile">
         <div className="profile__image-container">
-          <img src={avatar} alt="Profile Image" className="profile__image" />
+          <img
+            src={currentUser.avatar}
+            alt="Profile Image"
+            className="profile__image"
+          />
           <img
             src="../src/images/Vector 2.png"
             alt="Ícone"
             className="profile__image-icon"
+            onClick={() => onOpenPopup(editAvatarPopup)}
           />
         </div>
         <div className="profile__info">
           <div className="profile__name-button">
-            <h2 className="profile__name">Jacques Cousteau</h2>
+            <h2 className="profile__name">{currentUser.name}</h2>
             <button
               aria-label="Edit profile"
               className="profile__edit-button"
               type="button"
               onClick={() => {
-                handleOpenPopup(editProfilePopup);
+                onOpenPopup(editProfilePopup);
               }}
             ></button>
           </div>
-          <h1 className="profile__job">Explorador</h1>
+          <h1 className="profile__job">{currentUser.about}</h1>
         </div>
         <button
           aria-label="Add card"
           className="profile__add-image-button"
           type="button"
-          onClick={() => handleOpenPopup(newCardPopup)}
+          onClick={() => onOpenPopup(newCardPopup)}
         ></button>
       </section>
       <ul className="cards__list">
@@ -111,14 +148,15 @@ export default function Main() {
           <Card
             key={card._id}
             card={card}
-            onImageClick={handleImageClick}
-            onDeleteCard={handleDeleteCard}
+            onCardLike={onCardLike}
+            onDeleteCard={onDeleteCard}
+            onImageClick={onImageClick}
           />
         ))}
       </ul>
 
-      {popup && (
-        <Popup onClose={handleClosePopup} title={popup.title}>
+      {popup.isOpen && (
+        <Popup onClose={onClosePopup} title={popup.title}>
           {popup.children}
         </Popup>
       )}

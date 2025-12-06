@@ -1,16 +1,35 @@
+import { useState, useContext, useRef } from "react";
+import CurrentUserContext from "../../../../contexts/CurrentUserContext";
+
 export default function EditAvatar() {
+  const { handleUpdateAvatar } = useContext(CurrentUserContext);
+  const avatarRef = useRef();
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    handleUpdateAvatar({
+      avatar: avatarRef.current.value,
+    });
+  };
+
   return (
-    <form id="form" class="popup__update-avatar" novalidate>
-      <fieldset class="popup__fieldset">
+    <form
+      id="form"
+      className="popup__update-avatar"
+      noValidate
+      onSubmit={handleSubmit}
+    >
+      <fieldset className="popup__fieldset">
         <input
           type="url"
-          class="popup__input popup__avatar-input"
+          className="popup__input popup__avatar-input"
           id="avatar"
           name="avatar"
           placeholder="Link de Imagem"
+          ref={avatarRef}
           required
         />
-        <button class="popup__button-submit" type="submit">
+        <button className="popup__button-submit" type="submit">
           Salvar
         </button>
       </fieldset>
