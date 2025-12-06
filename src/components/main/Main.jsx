@@ -3,7 +3,7 @@ import Popup from "./components/Popup.jsx";
 import EditProfile from "./components/editProfile/EditProfile.jsx";
 import NewCard from "./components/newCard/NewCard.jsx";
 import Card from "./components/card/Card.jsx";
-import CurrentUserContext from "../../contexts/CurrentUserContext.jsx";
+import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 import EditAvatar from "./components/editAvatar/EditAvatar.jsx";
 
 export default function Main({
